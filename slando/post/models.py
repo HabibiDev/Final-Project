@@ -13,8 +13,10 @@ class Category(MPTTModel):
     def __str__(self):
         return self.name
 
+
 class ImagePost(models.Model):
-    image_file = models.ImageField(upload_to='article/%Y/%m/%d', null=True, blank=True)
+    image_file = models.ImageField(
+        upload_to='article/%Y/%m/%d', null=True, blank=True)
     created = models.DateTimeField(auto_now=True)
 
     class Meta:

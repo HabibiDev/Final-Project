@@ -13,7 +13,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='imagepost',
             name='image_file',
-            field=models.ImageField(blank=True, null=True, upload_to='article/%Y/%m/%d'),
+            field=models.ImageField(
+                blank=True, null=True, upload_to='article/%Y/%m/%d'),
         ),
         migrations.AlterField(
             model_name='post',
@@ -23,6 +24,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='post',
             name='image',
-            field=models.ManyToManyField(related_name='posts', to='post.ImagePost'),
+            field=models.ManyToManyField(
+                related_name='posts', to='post.ImagePost'),
         ),
     ]

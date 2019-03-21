@@ -17,6 +17,6 @@ class PostAdmin(admin.ModelAdmin):
         'price',
         'created')
 
+
 admin.site.register(Category, MPTTModelAdmin)
 admin.site.register(ImagePost)
-

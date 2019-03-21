@@ -14,12 +14,23 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework_swagger.views import get_swagger_view
+from rest_framework.authtoken import views
+
+docks_view = get_swagger_view(title='Docks API')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('accounts/', include('rest_framework.urls')),
+    path('swag', docks_view),
+    path('api-token-auth/', views.obtain_auth_token),
+    path('rest-auth/', include('rest_auth.urls')),
+
+
+    #path('api', include('user_account.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
