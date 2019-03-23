@@ -28,9 +28,7 @@ urlpatterns = [
     path('swag', docks_view),
     path('api-token-auth/', views.obtain_auth_token),
     path('rest-auth/', include('rest_auth.urls')),
-
-
-    #path('api', include('user_account.urls')),
+    path('', include('post.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
