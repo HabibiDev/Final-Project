@@ -67,6 +67,6 @@ class PostViewSet(viewsets.ModelViewSet):
         serializer.save(author=self.request.user)
 
 
-#    def get_queryset(self, request):
-#        if request.data['category']:
-#            cat = Category.objects.get(name=request.data['category'])
+    def get_queryset(self, request):
+        if request.data['category']:
+            cat = Category.objects.get(name=request.data['category'])

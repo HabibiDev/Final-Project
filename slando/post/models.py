@@ -7,6 +7,7 @@ from mptt.models import MPTTModel
 from mptt.models import TreeForeignKey
 from phonenumber_field.modelfields import PhoneNumberField
 from rest_framework.authtoken.models import Token
+from rest_framework import serializers
 
 
 class Category(MPTTModel):
@@ -27,8 +28,16 @@ class Category(MPTTModel):
 class ImagePost(models.Model):
     image_file = models.ImageField(
         upload_to='article/%Y/%m/%d', null=True, blank=True)
-    post_image = models.ForeignKey('Post', on_delete=models.SET_NULL, null=True, blank=True)
+    post_image = models.ForeignKey(
+        'Post', on_delete=models.SET_NULL, null=True, blank=True, related_name='image_post')
     uploaded = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if ImagePost.objects.filter(post_image=self.post_image.id).count() < 8:
+            super(ImagePost, self).save(*args, **kwargs)
+        else:
+            raise serializers.ValidationError(
+                "You can't save more than 8 pictures")
 
 
 class Post(models.Model):
@@ -50,8 +59,8 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
+
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:
         Token.objects.create(user=instance)
-
