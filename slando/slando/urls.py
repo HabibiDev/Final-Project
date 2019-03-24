@@ -27,7 +27,6 @@ urlpatterns = [
     path('accounts/', include('rest_framework.urls')),
     path('swag', docks_view),
     path('api-token-auth/', views.obtain_auth_token),
-    path('rest-auth/', include('rest_auth.urls')),
     path('', include('post.urls')),
 ]
 
