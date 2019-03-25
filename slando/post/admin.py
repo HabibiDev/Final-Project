@@ -15,7 +15,8 @@ class PostAdmin(admin.ModelAdmin):
         'title',
         'category',
         'price',
-        'created')
+        'created',
+        'is_active')
 
 
 admin.site.register(Category, MPTTModelAdmin)

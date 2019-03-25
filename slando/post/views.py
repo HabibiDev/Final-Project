@@ -61,7 +61,7 @@ class PostFilter(filters.FilterSet):
 
 
 class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.filter(is_active=True).order_by('title')
+    queryset = Post.objects.filter(is_active=True).order_by('-updated')
     serializer_class = PostSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,
                           IsAuthorOrReadOnly,)
