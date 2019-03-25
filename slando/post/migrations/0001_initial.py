@@ -18,13 +18,19 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Category',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=80)),
-                ('lft', models.PositiveIntegerField(db_index=True, editable=False)),
-                ('rght', models.PositiveIntegerField(db_index=True, editable=False)),
-                ('tree_id', models.PositiveIntegerField(db_index=True, editable=False)),
-                ('level', models.PositiveIntegerField(db_index=True, editable=False)),
-                ('parent', mptt.fields.TreeForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='children', to='post.Category')),
+                ('lft', models.PositiveIntegerField(
+                    db_index=True, editable=False)),
+                ('rght', models.PositiveIntegerField(
+                    db_index=True, editable=False)),
+                ('tree_id', models.PositiveIntegerField(
+                    db_index=True, editable=False)),
+                ('level', models.PositiveIntegerField(
+                    db_index=True, editable=False)),
+                ('parent', mptt.fields.TreeForeignKey(blank=True, null=True,
+                                                      on_delete=django.db.models.deletion.CASCADE, related_name='children', to='post.Category')),
             ],
             options={
                 'abstract': False,
@@ -33,15 +39,18 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ImagePost',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('image_file', models.ImageField(blank=True, null=True, upload_to='article/%Y/%m/%d')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
+                ('image_file', models.ImageField(blank=True,
+                                                 null=True, upload_to='article/%Y/%m/%d')),
                 ('uploaded', models.DateTimeField(auto_now=True)),
             ],
         ),
         migrations.CreateModel(
             name='Post',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=100)),
                 ('content', models.TextField(blank=True, max_length=5000, null=True)),
                 ('price', models.FloatField()),
@@ -49,13 +58,16 @@ class Migration(migrations.Migration):
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('updated', models.DateTimeField(auto_now=True)),
                 ('is_active', models.BooleanField(default=True)),
-                ('author', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
-                ('category', mptt.fields.TreeForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='posts_category', to='post.Category')),
+                ('author', models.ForeignKey(blank=True, null=True,
+                                             on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('category', mptt.fields.TreeForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, related_name='posts_category', to='post.Category')),
             ],
         ),
         migrations.AddField(
             model_name='imagepost',
             name='post_image',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='post.Post'),
+            field=models.ForeignKey(
+                blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='post.Post'),
         ),
     ]

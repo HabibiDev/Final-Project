@@ -7,18 +7,20 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import mixins
 from django.contrib.auth.models import User
-from .permissions import IsAuthorOrReadOnly, IsUserOrReadOnly, IsAuthorImageOrReadOnly
+from .permissions import IsAuthorOrReadOnly, IsAuthorImageOrReadOnly
 from django_filters import rest_framework as filters
-from mptt.fields import TreeNodeChoiceField, TreeNodeMultipleChoiceField
+import django_filters
 from .serializers import (UserSerializer,
                           CategorySerializer,
                           ImagePostSerializer,
                           PostSerializer)
-class UserCreate(generics.CreateAPIView):
-  queryset = User.objects.all()
-  serializer_class = UserSerializer
 
-  permission_classes = (permissions.AllowAny,)
+
+class UserCreate(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = (permissions.AllowAny,)
+                          
 
 
 class CategoryListView(generics.ListAPIView):
@@ -45,17 +47,20 @@ class ImagePostViewSet(viewsets.ModelViewSet):
 
 
 class PostFilter(filters.FilterSet):
-    #min_price = filters.NumberFilter(field_name="price", lookup_expr='gte')
-    #max_price = filters.NumberFilter(field_name="price", lookup_expr='lte')
-    price = filters.RangeFilter()
+    price = django_filters.RangeFilter('price')
+    category = filters.ModelChoiceFilter(
+        queryset=Category.objects.all(), method='category_filter')
 
     class Meta:
         model = Post
         fields = ['category', 'price']
 
+    def category_filter(self, queryset, name, value):
+        queryset = value.posts()
+        return queryset
+
 
 class PostViewSet(viewsets.ModelViewSet):
-
     queryset = Post.objects.filter(is_active=True).order_by('title')
     serializer_class = PostSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,
@@ -65,8 +70,3 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
-
-
-#    def get_queryset(self, request):
-#        if request.data['category']:
-#            cat = Category.objects.get(name=request.data['category'])
