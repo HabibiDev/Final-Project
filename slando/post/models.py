@@ -19,7 +19,8 @@ class Category(MPTTModel):
         order_insertion_by = ['name']
 
     def posts(self):
-        return Post.objects.filter(category=self.id)
+        return Post.objects.filter(category__in=Category.objects.get(id=self.id).
+                                   get_descendants(include_self=True))
 
     def __str__(self):
         return self.name
