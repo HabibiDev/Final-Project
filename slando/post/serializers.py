@@ -29,9 +29,11 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class ImagePostSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = ImagePost
         fields = ('id', 'image_file', 'uploaded', 'post_image')
+
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -58,8 +60,7 @@ class CategorySerializer(serializers.ModelSerializer):
     subcategories = RecursiveField(source="children",
                                    many=True, required=False)
     parent = serializers.ReadOnlyField(source='parent.name')
-    posts = PostSerializer(read_only=True, many=True)
 
     class Meta:
         model = Category
-        fields = ('id', 'parent', 'name', 'subcategories', 'posts')
+        fields = ('id', 'parent', 'name', 'subcategories')

@@ -8,13 +8,13 @@ from .views import (PostViewSet,
 app_name = 'post'
 
 router = DefaultRouter()
-router.register('posts', PostViewSet)
-router.register('images', ImagePostViewSet)
+router.register('posts', PostViewSet, 'posts')
+router.register('images', ImagePostViewSet, 'images')
 
 
 urlpatterns = [
     path('categories', CategoryListView.as_view(), name='categories'),
-    path('users', UserCreate.as_view(), name='users'),
+    path('register', UserCreate.as_view(), name='register'),
 
 
 ] + router.urls
