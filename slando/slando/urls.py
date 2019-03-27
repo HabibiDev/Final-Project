@@ -25,7 +25,7 @@ docks_view = get_swagger_view(title='Docks API')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('rest_framework.urls')),
-    path('swag', docks_view),
+    path('swagger', docks_view),
     path('api-token-auth/', views.obtain_auth_token),
     path('', include('post.urls')),
 ]
