@@ -10,7 +10,6 @@ from phonenumber_field.modelfields import PhoneNumberField
 from rest_framework.authtoken.models import Token
 
 
-
 class Category(MPTTModel):
     name = models.CharField(max_length=80, unique=False)
     parent = TreeForeignKey('self', on_delete=models.CASCADE,
@@ -27,9 +26,15 @@ class Category(MPTTModel):
         return self.name
 
 
+def get_path(instance, filename):
+    return '{0}/{1}/{2}'.format(instance.post_image.category,
+                                instance.post_image.title,
+                                filename)
+
+
 class ImagePost(models.Model):
     image_file = models.ImageField(
-        upload_to='article/%Y/%m/%d', null=True, blank=True)
+        upload_to=get_path, null=True, blank=True, max_length=500)
     post_image = models.ForeignKey(
         'Post', on_delete=models.SET_NULL, null=True, blank=True, related_name='image_post')
     uploaded = models.DateTimeField(auto_now=True)
@@ -53,9 +58,10 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
-    
+
     def get_api_url(self, request=None):
         return api_reverse('post:posts-detail', kwargs={'pk': self.pk}, request=request)
+
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
